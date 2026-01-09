@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EduVector - Innovative educational platform based on Unity">
+  <title>EduVector - Next-Generation Learning Platform</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22white%22>E</text></svg>">
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --card-bg: #0a0a0a;
+      --accent: #1a1a1a;
+      --primary: #1e3a8a;
+      --secondary: #10b981;
+      --accent-dark: #0d1b2a;
+    }
+
+    body {
+      background-color: var(--bg) !important;
+      color: var(--text) !important;
+    }
+
+    .hero {
+      background-color: var(--bg) !important;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .section {
+      background-color: var(--bg) !important;
+    }
+
+    .feature-card {
+      background-color: var(--card-bg) !important;
+      border: 1px solid var(--accent) !important;
+    }
+
+    .stats-grid {
+      background-color: var(--bg) !important;
+    }
+
+    .stat-item {
+      background-color: var(--card-bg) !important;
+      border: 1px solid var(--accent) !important;
+    }
+
+    .bot-card {
+      background-color: var(--card-bg) !important;
+      border: 1px solid var(--accent) !important;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, var(--primary), #1e40af) !important;
+      color: white !important;
+    }
+
+    .btn-outline {
+      background: transparent !important;
+      border: 1px solid #4b5563 !important;
+      color: white !important;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px) scale(1.05) !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .nav-link {
+      color: #e2e8f0 !important;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: white !important;
+    }
+
+    .logo {
+      color: white !important;
+    }
+
+    .footer-content {
+      border-top: 1px solid #1a1a1a !important;
+    }
+  </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+  <div class="container nav-container">
+    <a href="index.html" class="logo">
+      <span>EduVector</span>
+    </a>
+    <button class="hamburger" aria-label="Toggle navigation menu">☰</button>
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="ai-bots.html" class="nav-link">AI Bots</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#about" class="nav-link">Platform</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Unity-Powered Educational Platform</h1>
+      <p>Advanced learning through interactive simulations and artificial intelligence</p>
+      <div class="hero-buttons">
+        <a href="ai-bots.html" class="btn btn-outline">AI Assistants</a>
+        <a href="#features" class="btn">Explore</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="section features" id="features">
+  <div class="container">
+    <div class="section-title">
+      <h2>Platform Advantages</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>Game Mechanics</h3>
+        <p>Points, levels, rewards and internal currency for engaging learning</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>Adaptive AI</h3>
+        <p>Artificial intelligence that analyzes progress and adapts to student needs</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔬</div>
+        <h3>3D Simulations</h3>
+        <p>Interactive Unity-based scenarios for practical knowledge application</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-title">
+      <h2>About EduVector</h2>
+    </div>
+    <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+      <p style="font-size: 18px; margin-bottom: 20px; line-height: 1.7;">
+        EduVector is an innovative educational platform designed to increase motivation and interest in learning.
+        The platform solves engagement problems through gamified courses, interactive simulations, and AI assistants
+        that make learning both engaging and personalized.
+      </p>
+
+      <p style="font-size: 18px; margin-bottom: 20px; line-height: 1.7;">
+        Built on Unity engine, EduVector is cross-platform and universal. It develops independence, critical thinking,
+        and digital skills, helping students build their future through knowledge engagement.
+      </p>
+
+      <div style="margin: 30px 0; padding: 20px; background: #0a0a0a; border-radius: 16px; border: 1px solid #1a1a1a;">
+        <h3 style="color: #60a5fa; margin-bottom: 15px;">Core Objectives</h3>
+        <ul style="text-align: left; margin-left: 20px; line-height: 1.8;">
+          <li>Develop critical thinking through practical simulations</li>
+          <li>Increase motivation through game mechanics</li>
+          <li>Provide adaptive learning for individual student needs</li>
+          <li>Integrate AI assistants for personalized education</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="section" style="background: #0a0a0a; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a;">
+  <div class="container">
+    <h2>Transform the Learning Process</h2>
+    <p style="max-width: 700px; margin: 20px auto; color: #cbd5e1;">Join EduVector and discover new possibilities for interactive and engaging education</p>
+    <a href="ai-bots.html" class="btn btn-accent" style="margin-top: 30px;">Explore AI Assistants</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container footer-content">
+    <div class="footer-logo">EduVector</div>
+    <p>Next-generation gamified learning platform</p>
+    <div class="social-links">
+      <a href="#" class="social-link" aria-label="GitHub">
+        <span>GH</span>
+      </a>
+      <a href="#" class="social-link" aria-label="Unity">
+        <span>U</span>
+      </a>
+      <a href="#" class="social-link" aria-label="OpenCV">
+        <span>CV</span>
+      </a>
+    </div>
+    <p id="contact" style="margin-top: 20px; font-size: 14px; opacity: 0.8;"></p>
+    <p style="margin-top: 10px; font-size: 14px; opacity: 0.8;">© 2025 EduVector. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Checkly - AI assistant for automatic student work evaluation">
+  <title>Checkly - Work Evaluation | EduVector</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22white%22>E</text></svg>">
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --card-bg: #0a0a0a;
+      --accent: #1a1a1a;
+      --primary: #1e3a8a;
+      --secondary: #10b981;
+      --accent-dark: #0d1b2a;
+    }
+
+    body {
+      background-color: var(--bg) !important;
+      color: var(--text) !important;
+    }
+
+    .hero {
+      background-color: var(--bg) !important;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .section {
+      background-color: var(--bg) !important;
+    }
+
+    .upload-container {
+      background-color: var(--card-bg) !important;
+      border: 1px solid var(--accent) !important;
+      border-radius: 28px !important;
+      padding: 50px !important;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8) !important;
+      backdrop-filter: blur(12px) !important;
+      position: relative;
+      overflow: visible; /* Исправлено: allow overflow */
+      z-index: 1; /* Исправлено: понизить z-index */
+    }
+
+    .upload-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+      transform: rotate(45deg);
+    }
+
+    .result-block {
+      background-color: var(--card-bg) !important;
+      border-left: 4px solid #1e3a8a !important;
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .nav-link {
+      color: #e2e8f0 !important;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: white !important;
+    }
+
+    .logo {
+      color: white !important;
+    }
+
+    .footer-content {
+      border-top: 1px solid #1a1a1a !important;
+    }
+
+    /* Beautiful button styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 32px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.7s;
+      z-index: 1;
+    }
+
+    .button:hover::before {
+      left: 100%;
+    }
+
+    .button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+      transition: all 0.5s ease;
+      z-index: 0;
+      opacity: 0;
+    }
+
+    .button:hover::after {
+      opacity: 1;
+      transform: scale(0.9);
+    }
+
+    .button span {
+      position: relative;
+      z-index: 2;
+    }
+
+    .button:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+    }
+
+    .button:active {
+      transform: translateY(2px) scale(0.98);
+    }
+
+    .button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .button-analyze {
+      background: linear-gradient(135deg, #0f766e, #10b981, #0f766e);
+      background-size: 200% 200%;
+      color: white;
+      animation: gradientBGGreen 5s ease infinite;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    @keyframes gradientBGGreen {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .button-icon {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+    }
+
+    .upload-section {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .upload-section:last-child {
+      margin-bottom: 30px;
+    }
+
+    .upload-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: #6ee7b7;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .upload-area {
+      border: 3px dashed rgba(100, 116, 139, 0.5);
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      background: rgba(30, 41, 59, 0.4);
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-area::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 24px;
+    }
+
+    .upload-area:hover, .upload-area.dragover {
+      border-color: rgba(16, 185, 129, 0.8);
+      background: rgba(16, 185, 129, 0.05);
+      transform: scale(1.02);
+    }
+
+    .upload-area:hover::before {
+      opacity: 1;
+    }
+
+    .upload-icon {
+      font-size: 64px;
+      color: rgba(100, 116, 139, 0.7);
+      margin-bottom: 25px;
+      transition: all 0.4s ease;
+    }
+
+    .upload-area:hover .upload-icon {
+      color: #10b981;
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .upload-text {
+      color: #cbd5e1;
+      margin-bottom: 18px;
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .upload-subtext {
+      font-size: 17px;
+      color: #94a3b8;
+      max-width: 450px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .subject-selector {
+      margin: 40px 0 30px;
+      position: relative; /* Исправлено: добавить позиционирование */
+      z-index: 5; /* Исправлено: поднять z-index */
+    }
+
+    .subject-selector label {
+      display: block;
+      margin-bottom: 18px;
+      font-weight: 600;
+      color: #6ee7b7;
+      font-size: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 22px;
+      margin-top: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .subject-item {
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 18px;
+      padding: 22px 15px;
+      text-align: center;
+      transition: all 0.4s ease;
+      cursor: pointer;
+      border: 2px solid transparent;
+      font-weight: 500;
+      font-size: 18px;
+      color: #cbd5e1;
+      position: relative;
+      z-index: 2;
+    }
+
+    .subject-item:hover, .subject-item.selected {
+      border-color: rgba(16, 185, 129, 0.7);
+      background: rgba(16, 185, 129, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .subject-item.selected {
+      position: relative;
+      color: white;
+      font-weight: 600;
+    }
+
+    .subject-item.selected::after {
+      content: '✓';
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      width: 32px;
+      height: 32px;
+      background: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+      z-index: 3;
+    }
+
+    .preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      margin-top: 25px;
+      justify-content: center;
+    }
+
+    .preview-item {
+      width: 190px;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+      position: relative;
+      transition: all 0.4s ease;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .preview-item:hover {
+      transform: translateY(-12px) scale(1.05);
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .preview-image {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(45deg, #334155, #475569);
+      border-radius: 22px 22px 0 0;
+    }
+
+    .remove-preview {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(220, 38, 38, 0.9);
+      color: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .remove-preview:hover {
+      background: rgba(220, 38, 38, 1);
+      transform: scale(1.2) rotate(90deg);
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      display: none;
+    }
+
+    .loading-spinner {
+      width: 90px;
+      height: 90px;
+      border: 6px solid rgba(100, 116, 139, 0.3);
+      border-top: 6px solid #10b981;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 35px;
+      position: relative;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 32px;
+      font-weight: 700;
+      color: #34d399;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(52, 211, 153, 0.3);
+    }
+
+    .loading-subtext {
+      color: #94a3b8;
+      font-size: 20px;
+      max-width: 600px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .file-name {
+      margin-top: 18px;
+      font-weight: 600;
+      color: #6ee7b7;
+      text-align: center;
+      font-size: 18px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .results-section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .results-section-title h2 {
+      font-size: 44px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .results-container {
+      display: none;
+      margin-top: 40px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .result-block {
+      padding: 40px;
+      margin-bottom: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: all 0.4s ease;
+    }
+
+    .result-block:hover {
+      transform: translateX(12px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .result-block.errors {
+      border-left-color: rgba(220, 38, 38, 0.8);
+    }
+
+    .result-block.improvements {
+      border-left-color: rgba(234, 179, 8, 0.8);
+    }
+
+    .result-block.compliance {
+      border-left-color: rgba(16, 185, 129, 0.8);
+    }
+
+    .result-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: white;
+    }
+
+    .result-icon {
+      font-size: 32px;
+    }
+
+    .errors .result-icon { color: #f87171; }
+    .improvements .result-icon { color: #fde047; }
+    .compliance .result-icon { color: #34d399; }
+
+    .result-content {
+      line-height: 1.8;
+      color: #cbd5e1;
+      font-size: 19px;
+    }
+
+    .error-list, .improvement-list, .compliance-list {
+      padding-left: 30px;
+      margin-top: 20px;
+    }
+
+    .error-item, .improvement-item, .compliance-item {
+      margin-bottom: 20px;
+      position: relative;
+      padding-left: 25px;
+      font-size: 18px;
+    }
+
+    .error-item::before, .improvement-item::before, .compliance-item::before {
+      position: absolute;
+      left: 0;
+      top: 3px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .error-item::before { content: "•"; color: #f87171; }
+    .improvement-item::before { content: "•"; color: #fde047; }
+    .compliance-item::before { content: "•"; color: #34d399; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @media (max-width: 768px) {
+      .upload-container {
+        padding: 30px 20px !important;
+      }
+
+      .upload-area {
+        padding: 40px 20px;
+      }
+
+      .subject-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+
+      .preview-item {
+        width: 160px;
+        height: 160px;
+      }
+
+      .button {
+        width: 100%;
+        max-width: 300px;
+        padding: 18px 24px;
+        font-size: 18px;
+      }
+
+      .result-block {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">AI Processing</div>
+  <div class="loading-subtext">Analyzing student works with advanced machine learning algorithms. This may take up to 2 minutes.</div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="container nav-container">
+    <a href="index.html" class="logo">
+      <span>EduVector</span>
+    </a>
+    <button class="hamburger" aria-label="Toggle navigation menu">☰</button>
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="ai-bots.html" class="nav-link">AI Bots</a>
+      <a href="allsense.html" class="nav-link">AllSense</a>
+      <a href="checkly.html" class="nav-link active">Checkly</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>AI-Powered Student Work Evaluation</h1>
+      <p>Intelligent analysis and assessment of student assignments</p>
+    </div>
+  </div>
+</section>
+
+<!-- Upload Section -->
+<section class="section">
+  <div class="container">
+    <div class="upload-container">
+      <div class="upload-section">
+        <div class="upload-title">Assignment Document</div>
+        <div class="upload-area" id="assignment-drop-area">
+          <div class="upload-icon">📄</div>
+          <div class="upload-text">Drag assignment file here</div>
+          <div class="upload-subtext">or click to browse files (supports images and PDF)</div>
+          <input type="file" class="file-input" id="assignment-input" accept="image/*,application/pdf">
+          <div class="file-name" id="assignment-file-name"></div>
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <div class="upload-title">Student Works</div>
+        <div class="upload-area" id="works-drop-area">
+          <div class="upload-icon">📸</div>
+          <div class="upload-text">Drag student works here</div>
+          <div class="upload-subtext">Multiple files supported - images and PDF documents</div>
+          <input type="file" class="file-input" id="works-input" accept="image/*,application/pdf" multiple>
+          <div class="preview-container" id="works-preview-container"></div>
+        </div>
+      </div>
+
+      <div class="subject-selector">
+        <label for="subject-grid">Select Subject</label>
+        <div class="subject-grid" id="subject-grid">
+          <div class="subject-item" data-subject="math">Mathematics</div>
+          <div class="subject-item" data-subject="physics">Physics</div>
+          <div class="subject-item" data-subject="chemistry">Chemistry</div>
+          <div class="subject-item" data-subject="russian">Russian Language</div>
+          <div class="subject-item" data-subject="kazakh">Kazakh Language</div>
+          <div class="subject-item" data-subject="english">English Language</div>
+          <div class="subject-item" data-subject="history">History</div>
+          <div class="subject-item" data-subject="informatics">Computer Science</div>
+        </div>
+      </div>
+
+      <button class="button button-analyze" id="check-button" disabled>
+        <span class="button-icon">🧠</span> Analyze Works
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Results Section -->
+<section class="section" id="results-section" style="display: none; background: var(--card-bg); border-top: 1px solid var(--accent);">
+  <div class="container">
+    <div class="results-section-title">
+      <h2>Analysis Results</h2>
+      <p style="color: #94a3b8; max-width: 750px; margin: 0 auto; font-size: 20px; line-height: 1.7;">
+        AI has completed the analysis of student works. Below are the detailed results organized into three comprehensive sections.
+      </p>
+    </div>
+
+    <div class="results-container" id="results-container">
+      <div class="result-block errors">
+        <div class="result-title">
+          <span class="result-icon">❌</span>
+          <span>Detected Errors</span>
+        </div>
+        <div class="result-content">
+          <ul class="error-list">
+            <li class="error-item">No errors detected yet. Upload work to analyze.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="result-block improvements">
+        <div class="result-title">
+          <span class="result-icon">💡</span>
+          <span>Recommended Improvements</span>
+        </div>
+        <div class="result-content">
+          <ul class="improvement-list">
+            <li class="improvement-item">Upload a student work to receive personalized improvement recommendations.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="result-block compliance">
+        <div class="result-title">
+          <span class="result-icon">✅</span>
+          <span>Assignment Compliance</span>
+        </div>
+        <div class="result-content">
+          <ul class="compliance-list">
+            <li class="compliance-item">Analysis will show how well the work meets the assignment requirements.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="section" style="background: var(--card-bg); border-top: 1px solid var(--accent);">
+  <div class="container">
+    <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+      <h2 style="color: white; margin-bottom: 20px;">Transform Your Grading Process</h2>
+      <p style="color: #cbd5e1; line-height: 1.7; margin-bottom: 30px; font-size: 19px;">
+        Use Checkly to automate routine grading tasks and focus on individual student development. Save hours of manual work while providing more detailed and consistent feedback.
+      </p>
+      <div class="controls-container" style="margin-top: 20px; justify-content: center;">
+        <button class="button button-analyze" style="margin: 0;" onclick="document.querySelector('.upload-container').scrollIntoView({behavior: 'smooth'});">
+          <span class="button-icon">🚀</span> Start Analysis
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container footer-content">
+    <div class="footer-logo">EduVector</div>
+    <p>Next-generation gamified learning platform</p>
+    <div class="social-links">
+      <a href="#" class="social-link" aria-label="GitHub">
+        <span>GH</span>
+      </a>
+      <a href="#" class="social-link" aria-label="Unity">
+        <span>U</span>
+      </a>
+      <a href="#" class="social-link" aria-label="OpenCV">
+        <span>CV</span>
+      </a>
+    </div>
+    <p id="contact" style="margin-top: 20px; font-size: 14px; opacity: 0.8;"></p>
+    <p style="margin-top: 10px; font-size: 14px; opacity: 0.8;">© 2025 EduVector. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    const subjectItems = document.querySelectorAll('.subject-item');
+    const checkButton = document.getElementById('check-button');
+
+    // Mobile menu toggle
+    if (hamburger && navMenu) {
+      hamburger.addEventListener('click', function() {
+        navMenu.classList.toggle('active');
+        hamburger.textContent = navMenu.classList.contains('active') ? '×' : '☰';
+      });
+    }
+
+    // Выбрать первый предмет по умолчанию
+    if (subjectItems.length > 0) {
+      subjectItems[0].classList.add('selected');
+    }
+
+    // Обработка выбора предмета
+    subjectItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        subjectItems.forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+        updateCheckButtonState();
+      });
+    });
+
+    // Загрузка файлов
+    setupFileUpload('assignment-drop-area', 'assignment-input', 'assignment-file-name');
+    setupFileUpload('works-drop-area', 'works-input', null, 'works-preview-container');
+
+    // Отправка данных на бэкенд
+    checkButton.addEventListener('click', async function() {
+      loadingOverlay.style.display = 'flex';
+
+      const assignmentFile = document.getElementById('assignment-input').files[0];
+      const worksFiles = Array.from(document.getElementById('works-input').files);
+      const selectedSubject = document.querySelector('.subject-item.selected');
+      const subject = selectedSubject ? selectedSubject.dataset.subject : 'math';
+
+      if (!assignmentFile || worksFiles.length === 0 || !selectedSubject) {
+        alert('Пожалуйста, заполните все поля.');
+        loadingOverlay.style.display = 'none';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('assignment', assignmentFile);
+      worksFiles.forEach(file => formData.append('works', file));
+      formData.append('subject', subject);
+
+      try {
+        const response = await fetch('https://checkly-backend.onrender.com/analyze', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        loadingOverlay.style.display = 'none';
+
+        if (data.error) throw new Error(data.error);
+
+        document.getElementById('results-section').style.display = 'block';
+        document.getElementById('results-container').style.display = 'block';
+
+        // Парсинг ответа
+        let errors = "Ошибки не обнаружены.";
+        let improvements = "Работа выполнена корректно.";
+        let compliance = "Соответствует заданию полностью.";
+
+        if (data.result.includes("1️⃣ Ошибки в работе")) {
+          errors = data.result.split("1️⃣ Ошибки в работе")[1].split("2️⃣")[0].trim() || errors;
+        }
+        if (data.result.includes("2️⃣ Что нужно исправить")) {
+          improvements = data.result.split("2️⃣ Что нужно исправить")[1].split("3️⃣")[0].trim() || improvements;
+        }
+        if (data.result.includes("3️⃣ Соответствие заданию")) {
+          compliance = data.result.split("3️⃣ Соответствие заданию")[1].trim() || compliance;
+        }
+
+        // Обновление DOM
+        document.querySelector('.error-list').innerHTML = convertToHtmlList(errors);
+        document.querySelector('.improvement-list').innerHTML = convertToHtmlList(improvements);
+        document.querySelector('.compliance-list').innerHTML = convertToHtmlList(compliance);
+
+        document.getElementById('results-section').scrollIntoView({behavior: 'smooth'});
+      } catch (error) {
+        loadingOverlay.style.display = 'none';
+        alert('Ошибка анализа: ' + error.message);
+      }
+    });
+
+    // Обработка загрузки файлов
+    function setupFileUpload(dropAreaId, inputId, fileNameId, previewContainerId) {
+      const dropArea = document.getElementById(dropAreaId);
+      const fileInput = document.getElementById(inputId);
+      const fileNameElement = fileNameId ? document.getElementById(fileNameId) : null;
+      const previewContainer = previewContainerId ? document.getElementById(previewContainerId) : null;
+
+      dropArea.addEventListener('click', () => fileInput.click());
+
+      fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files, fileNameElement, previewContainer);
+        updateCheckButtonState();
+      });
+
+      ['dragover', 'dragenter'].forEach(eventName => {
+        dropArea.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          dropArea.classList.add('dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          dropArea.classList.remove('dragover');
+
+          if (eventName === 'drop' && e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            handleFiles(e.dataTransfer.files, fileNameElement, previewContainer);
+            updateCheckButtonState();
+          }
+        });
+      });
+    }
+
+    function handleFiles(files, fileNameElement, previewContainer) {
+      if (files.length === 0) return;
+
+      // Имя файла задания
+      if (fileNameElement && files.length === 1) {
+        fileNameElement.textContent = files[0].name;
+        fileNameElement.style.display = 'block';
+      }
+
+      // Превью работ
+      if (previewContainer) {
+        if (previewContainer.children.length + files.length > 5) {
+          previewContainer.innerHTML = '';
+        }
+
+        for (let i = 0; i < files.length && i < 5; i++) {
+          const file = files[i];
+          const previewItem = document.createElement('div');
+          previewItem.className = 'preview-item';
+
+          if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              const img = document.createElement('img');
+              img.className = 'preview-image';
+              img.src = e.target.result;
+              previewItem.appendChild(img);
+              addRemoveButton(previewItem, previewContainer);
+              previewContainer.appendChild(previewItem);
+            };
+            reader.readAsDataURL(file);
+          } else {
+            // Для PDF и других файлов
+            const fileIcon = document.createElement('div');
+            fileIcon.className = 'preview-image';
+            fileIcon.style.backgroundColor = '#334155';
+            fileIcon.style.display = 'flex';
+            fileIcon.style.alignItems = 'center';
+            fileIcon.style.justifyContent = 'center';
+            fileIcon.style.color = '#6ee7b7';
+            fileIcon.style.fontSize = '30px';
+            fileIcon.textContent = 'PDF';
+
+            previewItem.appendChild(fileIcon);
+            addRemoveButton(previewItem, previewContainer);
+            previewContainer.appendChild(previewItem);
+          }
+        }
+      }
+    }
+
+    function addRemoveButton(previewItem, container) {
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'remove-preview';
+      removeBtn.innerHTML = '×';
+      removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        previewItem.remove();
+        updateCheckButtonState();
+      });
+      previewItem.appendChild(removeBtn);
+    }
+
+    function updateCheckButtonState() {
+      const hasAssignment = document.getElementById('assignment-input').files.length > 0;
+      const hasWorks = document.getElementById('works-input').files.length > 0;
+      const hasSubject = document.querySelector('.subject-item.selected') !== null;
+      checkButton.disabled = !(hasAssignment && hasWorks && hasSubject);
+    }
+
+    function convertToHtmlList(text) {
+      return text
+              .split('\n')
+              .filter(line => line.trim() && !line.trim().startsWith('1️⃣') && !line.trim().startsWith('2️⃣') && !line.trim().startsWith('3️⃣'))
+              .map(line => `<li class="error-item">${line.replace(/^- /, '').trim()}</li>`)
+              .join('') || '<li class="error-item">Нет данных</li>';
+    }
+
+    // Инициализация
+    updateCheckButtonState();
+  });
+</script>
+</body>
+</html>

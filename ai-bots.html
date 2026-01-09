@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Bots for EduVector - AllSense for people with disabilities and Checkly for checking student work">
+  <title>AI Bots - EduVector</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22white%22>E</text></svg>">
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --card-bg: #0a0a0a;
+      --accent: #1a1a1a;
+      --primary: #1e3a8a;
+      --secondary: #10b981;
+      --accent-dark: #0d1b2a;
+    }
+
+    body {
+      background-color: var(--bg) !important;
+      color: var(--text) !important;
+    }
+
+    .hero {
+      background-color: var(--bg) !important;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .section {
+      background-color: var(--bg) !important;
+    }
+
+    .bot-card {
+      background-color: var(--card-bg) !important;
+      border: 1px solid var(--accent) !important;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, var(--primary), #1e40af) !important;
+      color: white !important;
+    }
+
+    .btn-outline {
+      background: transparent !important;
+      border: 1px solid #4b5563 !important;
+      color: white !important;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px) scale(1.05) !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .nav-link {
+      color: #e2e8f0 !important;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: white !important;
+    }
+
+    .logo {
+      color: white !important;
+    }
+
+    .footer-content {
+      border-top: 1px solid #1a1a1a !important;
+    }
+  </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+  <div class="container nav-container">
+    <a href="index.html" class="logo">
+      <span>EduVector</span>
+    </a>
+    <button class="hamburger" aria-label="Toggle navigation menu">☰</button>
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="ai-bots.html" class="nav-link active">AI Bots</a>
+      <a href="allsense.html" class="nav-link">AllSense</a>
+      <a href="checkly.html" class="nav-link">Checkly</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Intelligent Learning Assistants</h1>
+      <p>Advanced AI technologies for accessible and personalized education</p>
+      <div class="hero-buttons">
+        <a href="allsense.html" class="btn btn-outline">AllSense</a>
+        <a href="checkly.html" class="btn">Checkly</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI Bots Section -->
+<section class="section ai-bots">
+  <div class="container">
+    <div class="section-title">
+      <h2>AI Assistants</h2>
+    </div>
+    <div class="bots-grid">
+      <div class="bot-card">
+        <div class="bot-image"></div>
+        <div class="bot-content">
+          <div class="bot-tags">
+            <span class="bot-tag accessibility">Accessibility</span>
+            <span class="bot-tag">Computer Vision</span>
+          </div>
+          <h3>AllSense</h3>
+          <p>Eye-tracking interface for people with limited mobility. Enables full interaction with EduVector without manual input.</p>
+          <a href="allsense.html" class="btn">Access AllSense</a>
+        </div>
+      </div>
+
+      <div class="bot-card">
+        <div class="bot-image"></div>
+        <div class="bot-content">
+          <div class="bot-tags">
+            <span class="bot-tag">NLP</span>
+            <span class="bot-tag">Image Processing</span>
+            <span class="bot-tag">Education</span>
+          </div>
+          <h3>Checkly</h3>
+          <p>Intelligent assistant for automatic student work evaluation. Analyzes errors, provides recommendations, and assesses task compliance.</p>
+          <a href="checkly.html" class="btn">Access Checkly</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Integration Section -->
+<section class="section" style="background: #0a0a0a; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a;">
+  <div class="container">
+    <div class="section-title">
+      <h2>Platform Integration</h2>
+    </div>
+    <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+      <p style="font-size: 18px; margin-bottom: 20px; line-height: 1.7;">
+        AllSense and Checkly are fully integrated into the EduVector ecosystem, creating a unified environment for effective learning.
+      </p>
+
+      <div style="margin: 30px 0; padding: 20px; background: #0a0a0a; border-radius: 16px; border: 1px solid #1a1a1a;">
+        <h3 style="color: #a78bfa; margin-bottom: 15px;">Integration Benefits:</h3>
+        <ul style="text-align: left; margin-left: 20px; line-height: 1.8;">
+          <li>Unified authentication system for all services</li>
+          <li>Seamless data compatibility between tools</li>
+          <li>Instant access to AI assistants from any course</li>
+          <li>Automatic learning progress synchronization</li>
+          <li>Personalized recommendations based on integrated data</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="section" style="background: #0a0a0a; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a;">
+  <div class="container">
+    <h2 style="color: #e2e8f0;">Implement AI Assistants Today</h2>
+    <p style="max-width: 700px; margin: 20px auto; opacity: 0.9;">Enhance learning effectiveness and accessibility with EduVector technologies</p>
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
+      <a href="allsense.html" class="btn" style="background-color: #1e3a8a; color: white;">AllSense</a>
+      <a href="checkly.html" class="btn" style="background-color: #10b981; color: white;">Checkly</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container footer-content">
+    <div class="footer-logo">EduVector</div>
+    <p>Next-generation gamified learning platform</p>
+    <div class="social-links">
+      <a href="#" class="social-link" aria-label="GitHub">
+        <span>GH</span>
+      </a>
+      <a href="#" class="social-link" aria-label="Unity">
+        <span>U</span>
+      </a>
+      <a href="#" class="social-link" aria-label="OpenCV">
+        <span>CV</span>
+      </a>
+    </div>
+    <p id="contact" style="margin-top: 20px; font-size: 14px; opacity: 0.8;"></p>
+    <p style="margin-top: 10px; font-size: 14px; opacity: 0.8;">© 2025 EduVector. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
