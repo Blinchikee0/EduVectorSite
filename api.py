@@ -1,10 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
-import easyocr
-import tempfile
 import os
 import requests
-from typing import List
 
 app = FastAPI()
 
@@ -15,16 +12,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-reader = easyocr.Reader(['ru', 'en'], download_enabled=True, gpu=False)
-
-def ocr_image(file_path: str) -> str:
-    results = reader.readtext(file_path, detail=0, paragraph=True)
-    return "\n".join(results)
+def mock_ocr(filename: str) -> str:
+    """Имитация OCR: возвращает текст в зависимости от имени файла"""
+    if "assignment" in filename.lower():
+        return "Решите задачу: Найдите площадь треугольника со сторонами 3, 4, 5."
+    elif "perfect" in filename.lower() or "ideal" in filename.lower():
+        return "Площадь треугольника = 6. Ответ: 6."
+    elif "error" in filename.lower():
+        return "Площадь треугольника = 12. Ответ: 12."
+    else:
+        return "Площадь треугольника = 6."
 
 def query_llm(prompt: str) -> str:
     HF_TOKEN = os.getenv("HF_TOKEN")
     if not HF_TOKEN:
-        return "Ошибка: HF_TOKEN не задан"
+        return "Ошибка: HF_TOKEN не задан в Render"
     
     API_URL = "https://api-inference.huggingface.co/models/IlyaGusev/saiga_llama3"
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
@@ -38,47 +40,45 @@ def query_llm(prompt: str) -> str:
         )
         result = response.json()
         if isinstance(result, list) and len(result) > 0:
-            return result[0].get("generated_text", "Ошибка генерации")
+            text = result[0].get("generated_text", "")
+            if prompt.strip() in text:
+                text = text.replace(prompt.strip(), "", 1).strip()
+            return text
         else:
-            return f"Ошибка ИИ: {str(result)}"
+            return "ИИ не вернул анализ. Попробуйте снова."
     except Exception as e:
-        return f"Ошибка запроса: {str(e)}"
+        return f"Ошибка ИИ: {str(e)}"
 
 @app.post("/analyze")
 async def analyze_work(
     assignment: UploadFile = File(...),
-    works: List[UploadFile] = File(...),
+    works: list[UploadFile] = File(...),
     subject: str = Form(...)
 ):
     try:
-        with tempfile.TemporaryDirectory() as tmpdir:
-            assignment_path = os.path.join(tmpdir, assignment.filename)
-            with open(assignment_path, "wb") as f:
-                f.write(await assignment.read())
-            assignment_text = ocr_image(assignment_path)[:500]
+        assignment_text = mock_ocr(assignment.filename)
+        works_texts = [mock_ocr(work.filename) for work in works]
+        
+        prompt = f"""Ты — эксперт-учитель по предмету "{subject}".
+Задание ученикам: "{assignment_text}"
+Работы учеников: {" | ".join(works_texts)}
 
-            works_texts = []
-            for work in works:
-                work_path = os.path.join(tmpdir, work.filename)
-                with open(work_path, "wb") as f:
-                    f.write(await work.read())
-                works_texts.append(ocr_image(work_path)[:300])
-
-            prompt = f"""Проанализируй работы учеников по предмету: {subject}.
-Условие задания: "{assignment_text}"
-Работы учеников: {" ".join(works_texts)}
+Проанализируй каждую работу. Если ошибок нет — чётко скажи: "Ошибок нет. Работа выполнена верно."
+Если есть ошибки — укажи их конкретно, ссылаясь на условие задания.
 
 Ответь строго в формате:
 
 1️⃣ Ошибки в работе
 - ...
 
-2️⃣ Что нужно исправить
+2️⃣ Что нужно исправить ученику
 - ...
 
 3️⃣ Соответствие заданию
 - ..."""
 
-            return {"result": query_llm(prompt)}
+        ai_response = query_llm(prompt)
+        return {"result": ai_response}
+        
     except Exception as e:
-        return {"error": f"Ошибка: {str(e)}"}
+        return {"error": f"Системная ошибка: {str(e)}"}
