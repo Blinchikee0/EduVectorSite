@@ -12,25 +12,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def mock_ocr(filename: str) -> str:
-    """Имитация OCR: возвращает текст в зависимости от имени файла"""
-    if "assignment" in filename.lower():
-        return "Решите задачу: Найдите площадь треугольника со сторонами 3, 4, 5."
-    elif "perfect" in filename.lower() or "ideal" in filename.lower():
-        return "Площадь треугольника = 6. Ответ: 6."
-    elif "error" in filename.lower():
-        return "Площадь треугольника = 12. Ответ: 12."
-    else:
-        return "Площадь треугольника = 6."
-
 def query_llm(prompt: str) -> str:
     HF_TOKEN = os.getenv("HF_TOKEN")
     if not HF_TOKEN:
         return "Ошибка: HF_TOKEN не задан в Render"
-    
+
     API_URL = "https://api-inference.huggingface.co/models/IlyaGusev/saiga_llama3"
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
-    
+
     try:
         response = requests.post(
             API_URL,
@@ -56,15 +45,15 @@ async def analyze_work(
     subject: str = Form(...)
 ):
     try:
-        assignment_text = mock_ocr(assignment.filename)
-        works_texts = [mock_ocr(work.filename) for work in works]
-        
-        prompt = f"""Ты — эксперт-учитель по предмету "{subject}".
-Задание ученикам: "{assignment_text}"
-Работы учеников: {" | ".join(works_texts)}
+        assignment_name = assignment.filename
+        works_names = [work.filename for work in works]
 
-Проанализируй каждую работу. Если ошибок нет — чётко скажи: "Ошибок нет. Работа выполнена верно."
-Если есть ошибки — укажи их конкретно, ссылаясь на условие задания.
+        prompt = f"""Ты — эксперт-учитель по предмету "{subject}".
+Задание ученикам: файл "{assignment_name}"
+Работы учеников: {', '.join(works_names)}
+
+Проанализируй гипотетически. Если ошибок нет — скажи об этом.
+Если есть ошибки — укажи их конкретно.
 
 Ответь строго в формате:
 
@@ -79,6 +68,6 @@ async def analyze_work(
 
         ai_response = query_llm(prompt)
         return {"result": ai_response}
-        
+
     except Exception as e:
         return {"error": f"Системная ошибка: {str(e)}"}
