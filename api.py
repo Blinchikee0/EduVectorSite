@@ -16,10 +16,10 @@ def query_llm(prompt: str) -> str:
     HF_TOKEN = os.getenv("HF_TOKEN")
     if not HF_TOKEN:
         return "Ошибка: HF_TOKEN не задан в Render"
-
+    
     API_URL = "https://api-inference.huggingface.co/models/IlyaGusev/saiga_llama3"
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
-
+    
     try:
         response = requests.post(
             API_URL,
@@ -47,7 +47,7 @@ async def analyze_work(
     try:
         assignment_name = assignment.filename
         works_names = [work.filename for work in works]
-
+        
         prompt = f"""Ты — эксперт-учитель по предмету "{subject}".
 Задание ученикам: файл "{assignment_name}"
 Работы учеников: {', '.join(works_names)}
@@ -68,6 +68,6 @@ async def analyze_work(
 
         ai_response = query_llm(prompt)
         return {"result": ai_response}
-
+        
     except Exception as e:
         return {"error": f"Системная ошибка: {str(e)}"}
